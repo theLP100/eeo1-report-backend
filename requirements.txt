@@ -3,3 +3,7 @@ click
 itsdangerous
 Jinja2
 Werkzeug
+Flask_sqlalchemy
+Flask_migrate
+Flask_cors
+psycopg2-binary
