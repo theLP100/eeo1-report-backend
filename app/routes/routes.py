@@ -1,4 +1,5 @@
 from flask import Blueprint
+from app.models.Eeo1_data_line import Eeo1_data_line
 
 query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 
