@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app.models.Eeo1_data import Eeo1_data
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -12,11 +12,19 @@ from sqlalchemy.orm import Session
 query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 
 @query_bp.route("", methods = ["GET"])
-def read_all_data():
-    #this should return all the data we have.
-    #add a query option for single queries.
+def query():
     #THIS ROUTE NEEDS TESTING
-    data = Eeo1_data.query.filter_by(year=2021).all()
+    queryParam = request.args
+    if queryParam: #I'm not sure how to make it only filter by the ones that are included?
+        
+        company_query = queryParam.get('company', type=str) #you could put default = "amazon" in this 
+        year_query = queryParam.get('year', type= int) #you could put default = 2021 in this
+        #sortBy_query = queryParam.get('sortBy', type= str) #you could put default = "gender" in this #make this an enum? nah handle that on front end.
+
+        data = Eeo1_data.query.filter_by(company = company_query, year = year_query).all()
+        
+    else:
+        data = Eeo1_data.query.all()
     response = [data_line.to_dict() for data_line in data]
     # THE FOLLOWING DIDN'T WORK.
     # 
