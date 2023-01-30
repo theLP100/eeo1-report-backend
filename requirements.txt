@@ -7,3 +7,4 @@ Flask_sqlalchemy
 Flask_migrate
 Flask_cors
 psycopg2-binary
+dotenv
