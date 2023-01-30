@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app.models.Eeo1_data_line import Eeo1_data_line
+from app.models.Eeo1_data import Eeo1_data
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
@@ -16,7 +16,7 @@ def read_all_data():
     #this should return all the data we have.
     #add a query option for single queries.
     #THIS ROUTE NEEDS TESTING
-    data = Eeo1_data_line.query.all()
+    data = Eeo1_data.query.all()
     response = [data_line.to_dict() for data_line in data]
     # THE FOLLOWING DIDN'T WORK.
     # 

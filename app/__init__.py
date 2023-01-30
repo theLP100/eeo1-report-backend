@@ -15,7 +15,7 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
-    from app.models.Eeo1_data_line import Eeo1_data_line
+    from app.models.Eeo1_data import Eeo1_data
     
     db.init_app(app)
     migrate.init_app(app, db)
