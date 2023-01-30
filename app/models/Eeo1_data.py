@@ -7,7 +7,7 @@ class Eeo1_data(db.Model):
     job_category = db.Column(db.String, nullable = False)  #to-do later: change these string columns to enums. 
     gender = db.Column(db.String, nullable = False)
     race = db.Column(db.String, nullable = False)
-    year = db.Column(db.Integer, nullable = False)
+    year = db.Column(db.Integer, nullable = False) #should I make this be a db.Date object??
     company = db.Column(db.String, nullable = False)
 
     def to_dict(self):
