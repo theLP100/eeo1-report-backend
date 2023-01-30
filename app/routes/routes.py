@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify
 from app.models.Eeo1_data import Eeo1_data
 from app import db
 from sqlalchemy import func
-from sqlalchemy.orm import Session
 
 # TRYING - DOESN'T WORK YET
 # from sqlalchemy import create_engine
