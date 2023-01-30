@@ -18,7 +18,7 @@ def read_all_data():
     #THIS ROUTE NEEDS TESTING
     # data = Eeo1_data.query.all()
     # response = [data_line.to_dict() for data_line in data]
-    gender_totals = db.session.query(Eeo1_data.race, func.sum(Eeo1_data.count_employees)).group_by(Eeo1_data.race).all()
+    gender_totals = db.session.query(Eeo1_data.race, func.sum(Eeo1_data.count_employees)).filter(Eeo1_data.year==2021).group_by(Eeo1_data.race).all()
     return_dict = {}
     for gender, count_employees_total in gender_totals:
         return_dict[gender] = count_employees_total
