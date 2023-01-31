@@ -38,3 +38,6 @@ def test_get_all_two_saved_rows(client, two_rows):
         "race": "Hispanic or Latino",
         "year": 2021
     }]
+
+#I'm not going to test or provide error messages for routes that have incorrect query params, 
+#because front end is ensuring that they only use the correct params.  check with front end about this.
