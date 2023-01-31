@@ -7,7 +7,7 @@ import os
 
 db = SQLAlchemy()
 migrate = Migrate()
-load_dotenv
+load_dotenv()
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -16,7 +16,7 @@ def create_app(test_config=None):
 
     if test_config is None:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
-        #app.config['SQLALCHEMY_ECHO']=True
+        app.config['SQLALCHEMY_ECHO']=True
     else:
         app.config["TESTING"] = True
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_TEST_DATABASE_URI")

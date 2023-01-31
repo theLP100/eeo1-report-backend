@@ -7,7 +7,7 @@ def test_dummy(client):
     assert True
 
 def test_get_all_no_saved_rows(client):
-    response = client.get("/query")
+    response = client.get("/query/get_all")
     response_body = response.get_json()
 
     assert response.status_code == 200
