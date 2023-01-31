@@ -14,14 +14,14 @@ def query():
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
-    groupBy_field = queryParam.get('groupBy', type=str)
+    groupBy_field = queryParam.get('sortBy', type=str)
     
     field_dict = {
         "race": Eeo1_data.race,
         "gender": Eeo1_data.gender,
         "job": Eeo1_data.job_category
     }
-    field = None
+    field = field_dict[groupBy_field]
     for key, value in field_dict.items():
         if groupBy_field == key:
             field = value
