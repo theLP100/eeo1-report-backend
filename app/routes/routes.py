@@ -21,13 +21,9 @@ def query():
         "gender": Eeo1_data.gender,
         "job": Eeo1_data.job_category
     }
-    field = field_dict[groupBy_field]
-    for key, value in field_dict.items():
-        if groupBy_field == key:
-            field = value
-    
-    if not field:
-        response_str = f"Please enter a field to sort by.  Enter a query param with key groupBy and value race, gender, or job."
+    try: field = field_dict[groupBy_field]
+    except:
+        response_str = f"Please enter a field to sort by.  Enter a query param with key sortBy and value race, gender, or job."
         abort(make_response({"message": response_str}, 400))
 
     field_totals = db.session.query(field, func.sum(Eeo1_data.count_employees)).filter_by(company=company_query, year=year_query).group_by(field).all()
@@ -59,12 +55,16 @@ def get_companies_and_years():
     company = Eeo1_data.company
     year = Eeo1_data.year
     company_years = db.session.query(company, year).group_by(company, year)
-    response = {}
+    companies = []
+    years = []
+
     for company, year in company_years:
-        response[company] = year
+        companies.append(company)
+        years.append(year)
+    return_dict = {"company": companies, "year": years}
 
     #format this data better. 
-    return jsonify(response), 200
+    return jsonify(return_dict), 200
 
 
 
