@@ -22,6 +22,7 @@ def query():
 
 @query_bp.route("/get_all", methods = ["GET"])
 def get_all_entries():
+    #THIS ROUTE NEEDS TESTING
     queryParam = request.args
 
     data = Eeo1_data.query.filter_by(**queryParam)
