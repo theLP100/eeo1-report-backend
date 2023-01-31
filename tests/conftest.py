@@ -23,23 +23,23 @@ def app():
 def client(app):
     return app.test_client()
 
-# @pytest.fixture
-# def two_rows(app):
-#     new_row1 = Eeo1_data(
-#         company= "Amazon",
-#         count_employees= 100,
-#         gender= "Male",
-#         id= 0,
-#         job_category= "Exec/Sr. Officials & Mgrs",
-#         race="Hispanic or Latino",
-#         year= 2021)
-#     new_row2 = Eeo1_data(
-#         company= "Amazon",
-#         count_employees= 5000,
-#         gender= "Male",
-#         id= 1,
-#         job_category= "First/Mid Officials & Mgrs",
-#         race="Hispanic or Latino",
-#         year= 2021)
-#     db.session.add_all([new_row1, new_row2])
-#     db.session.commit()
+@pytest.fixture
+def two_rows(app):
+    new_row1 = Eeo1_data(
+        company= "Amazon",
+        count_employees= 100,
+        gender= "Male",
+        id= 0,
+        job_category= "Exec/Sr. Officials & Mgrs",
+        race="Hispanic or Latino",
+        year= 2021)
+    new_row2 = Eeo1_data(
+        company= "Amazon",
+        count_employees= 5000,
+        gender= "Male",
+        id= 1,
+        job_category= "First/Mid Officials & Mgrs",
+        race="Hispanic or Latino",
+        year= 2021)
+    db.session.add_all([new_row1, new_row2])
+    db.session.commit()
