@@ -55,16 +55,17 @@ def get_companies_and_years():
     company = Eeo1_data.company
     year = Eeo1_data.year
     company_years = db.session.query(company, year).group_by(company, year)
-    companies = []
-    years = []
+    response = {}
 
     for company, year in company_years:
-        companies.append(company)
-        years.append(year)
-    return_dict = {"company": companies, "year": years}
-
+        if company not in response.keys():
+            response[company] = [year]
+        else:
+            response[company].append(year)
+    for year_lst in response.values():
+        year_lst.sort()
     #format this data better. 
-    return jsonify(return_dict), 200
+    return jsonify(response), 200
 
 
 
