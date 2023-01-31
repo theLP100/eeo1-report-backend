@@ -25,9 +25,12 @@ def query():
         pass #return an error.
     #make results in the form valueData and labelData. 
     field_totals = db.session.query(field, func.sum(Eeo1_data.count_employees)).filter_by(company=company_query, year=year_query).group_by(field).all()
-    return_dict = {}
+    labelData = []
+    valueData = []
     for field_label, count_employees_total in field_totals:
-        return_dict[field_label] = count_employees_total
+        labelData.append(field_label)
+        valueData.append(count_employees_total)
+    return_dict = {"labelData": labelData, "valueData": valueData}
     return jsonify(return_dict)
 
 
