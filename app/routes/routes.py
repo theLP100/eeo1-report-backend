@@ -51,7 +51,8 @@ def get_all_entries():
 
 @query_bp.route("/company_years", methods = ["GET"])
 def get_companies_and_years():
-    #THIS ISN'T WORKING YET; IT'S ONLY RETURNING ONE YEAR: 2019.  FIGURE THIS OUT. 
+    """this returns a dictionary with companies as keys and values a list of valid years for that company. """
+    #THIS ROUTE NEEDS TESTING
     company = Eeo1_data.company
     year = Eeo1_data.year
     company_years = db.session.query(company, year).group_by(company, year)
