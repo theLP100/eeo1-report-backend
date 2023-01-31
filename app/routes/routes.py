@@ -7,15 +7,15 @@ from sqlalchemy import func
 query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 
 #-------a single group by query. required params: company, year, groupBy--------#
-@query_bp.route("", methods = ["GET"]) #this will be for a single group by query. 
+@query_bp.route("", methods = ["GET"]) 
 def query():
     #THIS ROUTE NEEDS TESTING
+    #make helper functions for this to make it read more clearly and have only one job per function?
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
     groupBy_field = queryParam.get('groupBy', type=str)
     
-    #set up a dictionary for this!!!
     field_dict = {
         "race": Eeo1_data.race,
         "gender": Eeo1_data.gender,
@@ -27,7 +27,7 @@ def query():
             field = value
     
     if not field:
-        response_str = f"Please enter a field to sort by.  Enter a query param with the key groupBy and the value race, gender, or job."
+        response_str = f"Please enter a field to sort by.  Enter a query param with key groupBy and value race, gender, or job."
         abort(make_response({"message": response_str}, 400))
 
     field_totals = db.session.query(field, func.sum(Eeo1_data.count_employees)).filter_by(company=company_query, year=year_query).group_by(field).all()
@@ -39,7 +39,7 @@ def query():
     return_dict = {"labelData": labelData, "valueData": valueData}
     return jsonify(return_dict), 200
 
-
+#------------get all records for the matching params---------#
 @query_bp.route("/get_all", methods = ["GET"])
 def get_all_entries():
     #THIS ROUTE NEEDS TESTING
@@ -52,5 +52,19 @@ def get_all_entries():
 
 #make a route that returns the list of companies #need to pull once
 #returns a dictionary with keys that are companies and values that is a list of valid years? 
+
+@query_bp.route("/company_years", methods = ["GET"])
+def get_companies_and_years():
+    #THIS ISN'T WORKING YET; IT'S ONLY RETURNING ONE YEAR: 2019.  FIGURE THIS OUT. 
+    company = Eeo1_data.company
+    year = Eeo1_data.year
+    company_years = db.session.query(company, year).group_by(company, year)
+    response = {}
+    for company, year in company_years:
+        response[company] = year
+
+    #format this data better. 
+    return jsonify(response), 200
+
 
 
