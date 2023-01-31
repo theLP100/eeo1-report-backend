@@ -44,7 +44,7 @@ def get_all_entries():
     data = Eeo1_data.query.filter_by(**queryParam)
 
     response = [data_line.to_dict() for data_line in data]
-    return jsonify(response)
+    return jsonify(response), 200
 
 #make a route that returns the list of companies #need to pull once
 #returns a dictionary with keys that are companies and values that is a list of valid years? 
