@@ -11,9 +11,6 @@ query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 def query():
     #THIS ROUTE NEEDS TESTING
     #make helper functions for this to make it read more clearly and have only one job per function?
-    
-    #MAKE HELPER FUNCTION THAT CHECKS IF THE QUERY PARAMS COME IN CORRECTLY 
-    #AND GIVES A LOGICAL RESPONSE IF THEY DON'T?
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
@@ -41,8 +38,6 @@ def query():
 #------------get all records for the matching params---------#
 @query_bp.route("/get_all", methods = ["GET"])
 def get_all_entries():
-    #CAN STILL TEST THAT QUERY PARAMS FILTER THE RESULTS
-    #CAN STILL TEST THAT INCORRECT QUERY PARAMS SEND A LOGICAL ERROR MESSAGE (and make this work)
     queryParam = request.args
 
     data = Eeo1_data.query.filter_by(**queryParam)
