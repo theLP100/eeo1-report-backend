@@ -11,6 +11,7 @@ query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 def query():
     #THIS ROUTE NEEDS TESTING
     #make helper functions for this to make it read more clearly and have only one job per function?
+    #organizing queries: 
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
@@ -26,7 +27,12 @@ def query():
         response_str = f"Please enter a field to sort by.  Enter a query param with key sortBy and value race, gender, or job."
         abort(make_response({"message": response_str}, 400))
 
-    field_totals = db.session.query(field, func.sum(Eeo1_data.count_employees)).filter_by(company=company_query, year=year_query).group_by(field).all()
+    #the query
+    field_totals = db.session.query(field, 
+        func.sum(Eeo1_data.count_employees)).filter_by(company=company_query,
+        year=year_query).group_by(field).all()
+
+    #setting up returns in the form we want.
     labelData = []
     valueData = []
     for field_label, count_employees_total in field_totals:
