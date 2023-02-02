@@ -6,7 +6,7 @@ from sqlalchemy import func
 
 query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 
-#-------a single group by query. required params: company, year, groupBy--------#
+#-------a single group by query. required params: company, year, sortBy--------#
 @query_bp.route("", methods = ["GET"]) 
 def query():
     #THIS ROUTE NEEDS TESTING
@@ -14,14 +14,14 @@ def query():
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
-    groupBy_field = queryParam.get('sortBy', type=str)
+    sortBy_field = queryParam.get('sortBy', type=str)
     
     field_dict = {
         "race": Eeo1_data.race,
         "gender": Eeo1_data.gender,
         "job": Eeo1_data.job_category
     }
-    try: field = field_dict[groupBy_field]
+    try: field = field_dict[sortBy_field]
     except:
         response_str = f"Please enter a field to sort by.  Enter a query param with key sortBy and value race, gender, or job."
         abort(make_response({"message": response_str}, 400))

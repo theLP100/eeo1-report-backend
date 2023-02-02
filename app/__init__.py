@@ -26,8 +26,10 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
     
-    from .routes.routes import query_bp
+    from .routes.query import query_bp
     app.register_blueprint(query_bp)
+    from .routes.adv_query import adv_query_bp
+    app.register_blueprint(adv_query_bp)
 
 
     return app
