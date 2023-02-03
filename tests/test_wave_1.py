@@ -2,6 +2,7 @@
 
 from app.models.Eeo1_data import Eeo1_data
 import pytest
+import urllib #this will help me convert params to urls.
 
 def test_dummy(client):
     assert True
@@ -55,3 +56,38 @@ def test_company_years_2_saved_rows(client, two_rows):
 
     assert response_body == {'Amazon': [2021]}
     assert response.status_code == 200
+
+def test_query_gender_no_saved_rows(client):
+    query_params = {
+        'company': 'Amazon',
+        'year': 2021,
+        'sortBy': 'gender'
+    }
+
+    #parse params using urllib:
+    param_url = urllib.parse.urlencode(query_params)
+
+    response = client.get("/query?" + param_url)
+    response_body = response.get_json()
+
+    assert len(response_body) == 2
+    assert response_body == {'labelData': [], 'valueData': []}
+    
+
+
+def test_query_gender_2_saved_rows(client, two_rows):
+    query_params = {
+        'company': 'Amazon',
+        'year': 2021,
+        'sortBy': 'gender'
+    }
+
+    #parse params using urllib:
+    param_url = urllib.parse.urlencode(query_params)
+
+    response = client.get("/query?" + param_url)
+    response_body = response.get_json()
+
+    assert len(response_body) == 2
+    assert response_body == {'labelData': ['Male'], 'valueData': [5100]}
+    

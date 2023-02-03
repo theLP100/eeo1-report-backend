@@ -53,8 +53,8 @@ def get_all_entries():
 
 @query_bp.route("/company_years", methods = ["GET"])
 def get_companies_and_years():
-    """this returns a dictionary with companies as keys and values a list of valid years for that company. """
-    #THIS ROUTE NEEDS TESTING
+    """this returns a dictionary with companies as keys 
+    and values a list of valid years for that company. """
     company = Eeo1_data.company
     year = Eeo1_data.year
     company_years = db.session.query(company, year).group_by(company, year)
@@ -67,7 +67,7 @@ def get_companies_and_years():
             response[company].append(year)
     for year_lst in response.values():
         year_lst.sort()
-    #format this data better. 
+    
     return jsonify(response), 200
 
 
