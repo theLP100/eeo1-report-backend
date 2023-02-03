@@ -12,6 +12,7 @@ adv_query_bp = Blueprint("adv_query_bp", __name__, url_prefix = "/adv_query")
 @adv_query_bp.route("", methods = ["GET"])
 def adv_query():
     #   THIS ROUTE NEEDS TESTING.
+    #figure out what to do if they put the same field for both. 
     # write docstring with more details. 
     # LATER, make it DRY using helper functions.
     queryParam = request.args

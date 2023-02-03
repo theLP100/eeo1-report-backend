@@ -41,3 +41,10 @@ def test_get_all_two_saved_rows(client, two_rows):
 
 #I'm not going to test or provide error messages for routes that have incorrect query params, 
 #because front end is ensuring that they only use the correct params.  check with front end about this.
+
+def test_company_years_no_saved_rows(client):
+    response = client.get("/query/company_years")
+    response_body = response.get_json()
+
+    assert response_body == {}
+    assert response.status_code == 200
