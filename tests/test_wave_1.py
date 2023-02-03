@@ -48,3 +48,10 @@ def test_company_years_no_saved_rows(client):
 
     assert response_body == {}
     assert response.status_code == 200
+
+def test_company_years_2_saved_rows(client, two_rows):
+    response = client.get("/query/company_years")
+    response_body = response.get_json()
+
+    assert response_body == {'Amazon': [2021]}
+    assert response.status_code == 200
