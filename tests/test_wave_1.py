@@ -4,9 +4,6 @@ from app.models.Eeo1_data import Eeo1_data
 import pytest
 import urllib #this will help me convert params to urls.
 
-def test_dummy(client):
-    assert True
-
 def test_get_all_no_saved_rows(client):
     response = client.get("/query/get_all")
     response_body = response.get_json()
