@@ -58,6 +58,8 @@ def get_all_entries():
     response = [data_line.to_dict() for data_line in data]
     return jsonify(response), 200
 
+
+#----the following two may be better suited to be their own endpoint, organization-wise----
 @query_bp.route("/company_years", methods = ["GET"])
 def get_companies_and_years():
     """this returns a dictionary with companies as keys 
@@ -77,5 +79,25 @@ def get_companies_and_years():
     
     return jsonify(response), 200
 
+@query_bp.route("/company_jobs", methods = ["GET"])
+def get_companies_job_categories():
+    #THIS ROUTE NEEDS TESTING
+    job_categories = ['Exec/Sr. Officials & Mgrs','First/Mid Officials & Mgrs','Professionals','Technicians','Sales Workers','Administrative Support','Craft Workers','Operatives','Laborers & Helpers','Service Workers']
+    company = Eeo1_data.company
+    job = Eeo1_data.job_category
+
+    company_jobs = db.session.query(company, job, func.sum(Eeo1_data.count_employees)).group_by(company, job).all()
+    response = {}
+    
+    for company, job, count_employees_total in company_jobs:
+        if count_employees_total > 0:
+            if company not in response.keys():
+                response[company] = [job]
+            else:
+                response[company].append(job)
+        for job_lst in response.values():
+            job_lst.sort()
+        
+    return jsonify(response), 200
 
 
