@@ -24,7 +24,7 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def two_rows(app):
+def four_rows(app):
     new_row1 = Eeo1_data(
         company= "Amazon",
         count_employees= 100,
@@ -41,5 +41,21 @@ def two_rows(app):
         job_category= "First/Mid Officials & Mgrs",
         race="Hispanic or Latino",
         year= 2021)
-    db.session.add_all([new_row1, new_row2])
+    new_row3 = Eeo1_data(
+        company= "Amazon",
+        count_employees= 2000,
+        gender= "Female",
+        id= 2,
+        job_category= "First/Mid Officials & Mgrs",
+        race="Hispanic or Latino",
+        year= 2021)
+    new_row4 = Eeo1_data(
+        company= "Amazon",
+        count_employees= 10,
+        gender= "Female",
+        id= 3,
+        job_category= "Exec/Sr. Officials & Mgrs",
+        race="Hispanic or Latino",
+        year= 2021)
+    db.session.add_all([new_row1, new_row2, new_row3, new_row4])
     db.session.commit()

@@ -38,7 +38,7 @@ def adv_query():
     #the query:
     field_totals = db.session.query(field1, field2, 
         func.sum(Eeo1_data.count_employees)).filter_by(company=company_query,
-        year = year_query).group_by(field1, field2).order_by(func.sum(Eeo1_data.count_employees).desc()).all()
+        year = year_query).group_by(field1, field2).order_by(field1, func.sum(Eeo1_data.count_employees).desc()).all()
         #previously it was .order_by(field2, field1)
 
     #setting up returns.

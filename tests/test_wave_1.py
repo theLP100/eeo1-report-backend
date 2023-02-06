@@ -11,12 +11,12 @@ def test_get_all_no_saved_rows(client):
     assert response.status_code == 200
     assert response_body == []
 
-def test_get_all_two_saved_rows(client, two_rows):
+def test_get_all_two_saved_rows(client, four_rows):
     response = client.get("/query/get_all")
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert len(response_body) == 2
+    assert len(response_body) == 4
     assert response_body == [
     {
         "company": "Amazon",
@@ -35,6 +35,24 @@ def test_get_all_two_saved_rows(client, two_rows):
         "job_category": "First/Mid Officials & Mgrs",
         "race": "Hispanic or Latino",
         "year": 2021
+    },
+        {
+        "company": "Amazon",
+        "count_employees": 2000,
+        "gender": "Female",
+        "id": 2,
+        "job_category": "First/Mid Officials & Mgrs",
+        "race": "Hispanic or Latino",
+        "year": 2021
+    },
+    {
+        "company": "Amazon",
+        "count_employees": 10,
+        "gender": "Female",
+        "id": 3,
+        "job_category": "Exec/Sr. Officials & Mgrs",
+        "race": "Hispanic or Latino",
+        "year": 2021
     }]
 
 #I'm not going to test or provide error messages for routes that have incorrect query params, 
@@ -47,7 +65,7 @@ def test_company_years_no_saved_rows(client):
     assert response_body == {}
     assert response.status_code == 200
 
-def test_company_years_2_saved_rows(client, two_rows):
+def test_company_years_2_saved_rows(client, four_rows):
     response = client.get("/query/company_years")
     response_body = response.get_json()
 
@@ -72,7 +90,7 @@ def test_query_gender_no_saved_rows(client):
     
 
 
-def test_query_gender_2_saved_rows(client, two_rows):
+def test_query_gender_4_saved_rows(client, four_rows):
     query_params = {
         'company': 'Amazon',
         'year': 2021,
@@ -86,5 +104,5 @@ def test_query_gender_2_saved_rows(client, two_rows):
     response_body = response.get_json()
 
     assert len(response_body) == 2
-    assert response_body == {'labelData': ['Male'], 'valueData': [5100]}
+    assert response_body == {'labelData': ['Female', 'Male'], 'valueData': [2010, 5100]}
     

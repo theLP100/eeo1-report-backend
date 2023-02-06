@@ -22,7 +22,7 @@ def test_adv_query_gender_no_saved_rows(client):
     assert response_body == {'labelData': [], 'valueData': {}}
     
 
-def test_adv_query_gender_2_saved_rows(client, two_rows):
+def test_adv_query_gender_2_saved_rows(client, four_rows):
     query_params = {
         'company': 'Amazon',
         'year': 2021,
@@ -37,5 +37,5 @@ def test_adv_query_gender_2_saved_rows(client, two_rows):
     response_body = response.get_json()
 
     assert len(response_body) == 2
-    assert response_body == {'labelData': ['Male'], 'valueData': {"Exec/Sr. Officials & Mgrs": [100], "First/Mid Officials & Mgrs": [5000]}}
+    assert response_body == {'labelData': ['Female', 'Male'], 'valueData': {"Exec/Sr. Officials & Mgrs": [10, 100], "First/Mid Officials & Mgrs": [2000, 5000]}}
     
