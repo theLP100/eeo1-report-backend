@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, abort, make_response
+from flask import Flask, Blueprint, jsonify, request, abort, make_response
 from app.models.Eeo1_data import Eeo1_data
 from app import db
 from sqlalchemy import func
@@ -13,33 +13,28 @@ adv_query_bp = Blueprint("adv_query_bp", __name__, url_prefix = "/adv_query")
 def adv_query():
     """params: company, year, sortBy1, sortBy2.  sortBy1 is a list of job categories to display."""
     # LATER, make it DRY using helper functions.
-    # job cats, for reference: 
-    job_categories = ['Exec/Sr. Officials & Mgrs','First/Mid Officials & Mgrs','Professionals','Technicians','Sales Workers','Administrative Support','Craft Workers','Operatives','Laborers & Helpers','Service Workers']
+    #job_categories = ['Exec/Sr. Officials & Mgrs','First/Mid Officials & Mgrs','Professionals','Technicians','Sales Workers','Administrative Support','Craft Workers','Operatives','Laborers & Helpers','Service Workers']
 
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
-    job_cat_lst = queryParam.get('sortBy1', type=str)
+    job_cat_lst = queryParam.getlist('sortBy1[]')
     sortBy2_field = queryParam.get('sortBy2', type=str)
 
     field_dict = {
         "race": Eeo1_data.race,
         "gender": Eeo1_data.gender,
-        #"job": Eeo1_data.job_category
     }
 
-    field1 = Eeo1_data.job_category
     try: 
-        #field1 = field_dict[sortBy1_field]
         field2 = field_dict[sortBy2_field]
     except:
         response_str = f"Please enter 'gender' or 'race' for sortBy2"
         abort(make_response({"message": response_str}, 400))
 
     #the query:
-    field_totals = db.session.query(field1, field2, 
-        func.sum(Eeo1_data.count_employees)).filter_by(job_category = job_cat_lst, company=company_query,
-        year = year_query).group_by(field1, field2).order_by(field1, func.sum(Eeo1_data.count_employees).desc()).all()
+    field_totals = db.session.query(Eeo1_data.job_category, field2, 
+        func.sum(Eeo1_data.count_employees)).filter(Eeo1_data.job_category.in_(job_cat_lst)).filter_by(company=company_query,year=year_query).group_by(Eeo1_data.job_category, field2).order_by(Eeo1_data.job_category, func.sum(Eeo1_data.count_employees).desc()).all()
 
     #setting up returns.
     labelData = []

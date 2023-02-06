@@ -8,8 +8,9 @@ def test_adv_query_gender_no_saved_rows(client):
     query_params = {
         'company': 'Amazon',
         'year': 2021,
-        'sortBy1': 'gender',
-        'sortBy2': 'job'
+        'sortBy1[]': 'Exec/Sr. Officials & Mgrs',
+        'sortBy1[]': "First/Mid Officials & Mgrs",
+        'sortBy2': 'gender'
     }
 
     #parse params using urllib:
@@ -22,12 +23,12 @@ def test_adv_query_gender_no_saved_rows(client):
     assert response_body == {'labelData': [], 'valueData': {}}
     
 
-def test_adv_query_gender_2_saved_rows(client, four_rows):
+def test_adv_query_gender_4_saved_rows_1_job_cat(client, four_rows):
     query_params = {
         'company': 'Amazon',
         'year': 2021,
-        'sortBy1': 'gender',
-        'sortBy2': 'job'
+        'sortBy1[]': "First/Mid Officials & Mgrs",
+        'sortBy2': 'gender'
     }
 
     #parse params using urllib:
@@ -37,5 +38,8 @@ def test_adv_query_gender_2_saved_rows(client, four_rows):
     response_body = response.get_json()
 
     assert len(response_body) == 2
-    assert response_body == {'labelData': ['Female', 'Male'], 'valueData': {"Exec/Sr. Officials & Mgrs": [10, 100], "First/Mid Officials & Mgrs": [2000, 5000]}}
+    assert response_body == {'labelData': ["First/Mid Officials & Mgrs"], 'valueData': {"Female": [2000], "Male": [5000]}}
     
+#I had trouble making tests for multiple job cats (because the query_param dict could only hold one sortby1[])
+#but I've verified in postman. 
+#if extra time, add a test here.
