@@ -8,7 +8,7 @@ adv_query_bp = Blueprint("adv_query_bp", __name__, url_prefix = "/adv_query")
 
 #-----------A double groupby query.  required params: company, year, sortBy1, sortBy2"------
 #returns: labelData and valueData, organized alphabetically.
-#I'm choosing to make this a separate query for now. there may be a better way to combine these later. 
+#new requirements: sortBy1 will always be job.  however! now, it will be a list of job
 @adv_query_bp.route("", methods = ["GET"])
 def adv_query():
     #   THIS ROUTE NEEDS TESTING.
