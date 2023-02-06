@@ -30,7 +30,7 @@ def query():
     #the query
     field_totals = db.session.query(field, 
         func.sum(Eeo1_data.count_employees)).filter_by(company=company_query,
-        year=year_query).group_by(field).all()
+        year=year_query).group_by(field).order_by(func.sum(Eeo1_data.count_employees).desc()).all()
 
     #setting up returns in the form we want.
     labelData = []
