@@ -8,38 +8,38 @@ adv_query_bp = Blueprint("adv_query_bp", __name__, url_prefix = "/adv_query")
 
 #-----------A double groupby query.  required params: company, year, sortBy1, sortBy2"------
 #returns: labelData and valueData, organized alphabetically.
-#new requirements: sortBy1 will always be job.  however! now, it will be a list of job
+#new requirements: sortBy1 will always be job.  however! now, it will be a list of job categories.
 @adv_query_bp.route("", methods = ["GET"])
 def adv_query():
-    #   THIS ROUTE NEEDS TESTING.
-    #figure out what to do if they put the same field for both. 
-    # write docstring with more details. 
+    """params: company, year, sortBy1, sortBy2.  sortBy1 is a list of job categories to display."""
     # LATER, make it DRY using helper functions.
+    # job cats, for reference: 
+    job_categories = ['Exec/Sr. Officials & Mgrs','First/Mid Officials & Mgrs','Professionals','Technicians','Sales Workers','Administrative Support','Craft Workers','Operatives','Laborers & Helpers','Service Workers']
+
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year', type=int) 
-    sortBy1_field = queryParam.get('sortBy1', type=str)
+    job_cat_lst = queryParam.get('sortBy1', type=str)
     sortBy2_field = queryParam.get('sortBy2', type=str)
 
     field_dict = {
         "race": Eeo1_data.race,
         "gender": Eeo1_data.gender,
-        "job": Eeo1_data.job_category
+        #"job": Eeo1_data.job_category
     }
 
+    field1 = Eeo1_data.job_category
     try: 
-        field1 = field_dict[sortBy1_field]
+        #field1 = field_dict[sortBy1_field]
         field2 = field_dict[sortBy2_field]
-        #add a check here to make sure that these fields aren't the same?
     except:
-        response_str = f"Please enter two fields to sort by.  Enter a query param with key sortBy1 and value race, gender, or job.  Do the same for sortBy2."
+        response_str = f"Please enter 'gender' or 'race' for sortBy2"
         abort(make_response({"message": response_str}, 400))
 
     #the query:
     field_totals = db.session.query(field1, field2, 
-        func.sum(Eeo1_data.count_employees)).filter_by(company=company_query,
+        func.sum(Eeo1_data.count_employees)).filter_by(job_category = job_cat_lst, company=company_query,
         year = year_query).group_by(field1, field2).order_by(field1, func.sum(Eeo1_data.count_employees).desc()).all()
-        #previously it was .order_by(field2, field1)
 
     #setting up returns.
     labelData = []
