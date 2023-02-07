@@ -34,21 +34,35 @@ def adv_query():
 
     #the query:
     field_totals = db.session.query(Eeo1_data.job_category, field2, 
-        func.sum(Eeo1_data.count_employees)).filter(Eeo1_data.job_category.in_(job_cat_lst)).filter_by(company=company_query,year=year_query).group_by(Eeo1_data.job_category, field2).order_by(Eeo1_data.job_category, func.sum(Eeo1_data.count_employees).desc()).all()
+        func.sum(Eeo1_data.count_employees)).filter(Eeo1_data.job_category.in_(job_cat_lst)).filter_by(company=company_query,year=year_query).group_by(Eeo1_data.job_category, field2).order_by(func.sum(Eeo1_data.count_employees).desc()).all()
 
+    
+    #record the order of the list of job categories.
+    job_cat_order = {}
+    for ix, job_cat in enumerate(job_cat_lst):
+        job_cat_order[job_cat] = ix
+    #save the number of job_cats:
+    num_job_cats = len(job_cat_lst)
+    
     #setting up returns.
-    labelData = []
+    if len(field_totals) == 0:
+        labelData = []
+    else:
+        labelData = [None]*num_job_cats
     valueData = {}
-    for field1_label, field2_label, count_employees_total in field_totals:
-        #get a list of field1_labels with no repeats:
-        if field1_label not in labelData:
-            labelData.append(field1_label)
-        #valueData is a dictionary with keys = the values of field2, 
+    for job_cat_label, field2_label, count_employees_total in field_totals:
+        #valueData is a dictionary with keys = the values of field2 (eg. 'Female' and 'Male')
         # and values = count employees in that category.
+        #figure out what index to put it in the list.
+        index = job_cat_order[job_cat_label]
+        if job_cat_label in job_cat_lst:
+            labelData[index] = job_cat_label
+
+        #put the field2 lables in as keys to the value data dictionary:
         if field2_label not in valueData.keys():
-            valueData[field2_label] = [count_employees_total]
-        else:
-            valueData[field2_label].append(count_employees_total)
+            valueData[field2_label] = [None] * num_job_cats
+        
+        valueData[field2_label][index] = count_employees_total
     
     return_obj = {"labelData": labelData, "valueData": valueData}
     return jsonify(return_obj), 200
