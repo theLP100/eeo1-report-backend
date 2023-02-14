@@ -13,23 +13,23 @@ This program, EEO1-report-backend manages the "get" routes for the database.  (A
 
 ## The Routes
 
-#### /query
+### __/query__
 - Takes in params: company (str), year (int), sortBy ['race', 'gender', or 'job']
 - It returns the count of employees in each of the categories for your given sortBy field, filtered by the given company and year, in the following format:
 - returns {'labelData': [the names of the labels], 'valueData': [the values matching those labels in the same order]}
 
-#### /query/company_years_jobs
+### __/query/company_years_jobs__
 - This returns a dictionary with keys: company names, and values a dict, containing:
   - 'years': list of valid years, 
   - 'jobs': list of jobs with non-zero employees,
   - 'totalEmployees': dict with keys: years, and values: total employees for that year.
 - This endpoint is used by the front end to get the values for the drop-down menus and the total employee count displayed on the page.
 
-#### /query/get_all
+### __/query/get_all__
 - returns every line of data in the EEO1_data table as dictionaries.
 - this was useful for testing and development, but isn't used in the final app.
 
-#### /adv_query
+### __/adv_query__
 - This is the most important part of the program, because it enables the advanced mode.
 - Takes in params: company, year, sortBy1 (which is a list of job categories), sortBy2 (either 'race' or 'gender').  
   - year will be either an int or a string "all".  if year is "all", job category will only be one job category.
