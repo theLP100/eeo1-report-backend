@@ -9,6 +9,9 @@ query_bp = Blueprint("query_bp" , __name__, url_prefix = "/query")
 #-------a single group by query. required params: company, year, sortBy--------#
 @query_bp.route("", methods = ["GET"]) 
 def query():
+    """takes in params: company (str), year (int), sortBy ['race', 'gender', or 'job']
+    It returns the count of employees in each of the categories for your given sortBy field, filtered by the given company and year, in the following format:
+    returns {'labelData': [the names of the labels], 'valueData': [the values matching those labels in the same order]}"""
     #organizing queries: 
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
@@ -49,6 +52,7 @@ def get_all_entries():
     response = [data_line.to_dict() for data_line in data]
     return jsonify(response), 200
 
+#---------------Returns valid years and jobs for companies, and total employees per company year ------#
 @query_bp.route("/company_years_jobs", methods = ["GET"])
 def get_companies_and_years():
     """this returns a dictionary with companies as keys 

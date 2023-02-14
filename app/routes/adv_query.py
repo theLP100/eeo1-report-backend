@@ -8,21 +8,17 @@ adv_query_bp = Blueprint("adv_query_bp", __name__, url_prefix = "/adv_query")
 
 #-----------A double groupby query.  required params: company, year, sortBy1, sortBy2"------
 #returns: labelData and valueData, organized alphabetically.
-#new requirements: sortBy1 will always be job.  however! now, it will be a list of job categories.
 @adv_query_bp.route("", methods = ["GET"])
 def adv_query():
-    """params: company, year, sortBy1, sortBy2.  
+    """params: company, year, sortBy1 (which is a list of job categories), sortBy2 (either 'race' or 'gender').  
     year will be either an int or a string "all".  if year is "all", job category will only be one job category.
-    sortBy1 is a list of job categories to display."""
-    # LATER, make it DRY using helper functions.
+    returns labelData and valueData, where value data is the count employees matching the label in the corresponding list position."""
     
     queryParam = request.args
     company_query = queryParam.get('company', type=str) 
     year_query = queryParam.get('year') 
     job_cat_lst = queryParam.getlist('sortBy1[]')
     sortBy2_field = queryParam.get('sortBy2', type=str)
-
-    
 
     field_dict = {
         "race": Eeo1_data.race,
@@ -35,7 +31,7 @@ def adv_query():
         response_str = f"Please enter 'gender' or 'race' for sortBy2"
         abort(make_response({"message": response_str}, 400))
 
-    #if year is "all", returns are different.
+    #if year is "all", returns are different:
     if year_query == "all":
         #   THIS PART OF THE CODE NEEDS TESTING.  GIVEN: YEARS AND ONE JOB_CAT, RETURN BREAKDOWN BY RACE OR GENDER OVER THOSE YEARS.
         field_totals = db.session.query(Eeo1_data.year, field2, 
