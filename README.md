@@ -36,3 +36,5 @@ The routes are as follows:
 
 There is a test suite with fixtures checking each of these routes.
 Note that there is limited error handling (for example, for invalid input) because our front end uses drop-down menus and the /query/company_years_jobs endpoint to ensure that valid input is entered.
+
+Can't get enough data?  I also explored the data by making some visualizations. Check out my process and these graphs here: https://github.com/theLP100/dataVisualizations 
