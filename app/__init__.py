@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+import psycopg2
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -13,6 +14,10 @@ def create_app(test_config=None):
     app = Flask(__name__)
     CORS(app)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # #putting this in for heroku?
+    # DATABASE_URL = os.environ['DATABASE_URL']
+    # conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 
     if test_config is None:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")

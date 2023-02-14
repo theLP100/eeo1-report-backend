@@ -69,7 +69,7 @@ def test_company_years_2_saved_rows(client, four_rows):
     response = client.get("/query/company_years_jobs")
     response_body = response.get_json()
 
-    assert response_body == {'Amazon': {'jobs': ['Exec/Sr. Officials & Mgrs', 'First/Mid Officials & Mgrs'], 'years': [2021]}}
+    assert response_body == {'Amazon': {'jobs': ['Exec/Sr. Officials & Mgrs', 'First/Mid Officials & Mgrs'], 'years': [2021], 'totalEmployees': {"2021": 7110}}}
     assert response.status_code == 200
 
 def test_query_gender_no_saved_rows(client):
